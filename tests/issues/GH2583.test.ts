@@ -27,7 +27,7 @@ describe('enum array with native PG enums (GH issue 2583)', () => {
     });
     await orm.schema.dropDatabase('mikro_orm_test_2583');
     await orm.schema.createDatabase('mikro_orm_test_2583');
-    await orm.em.execute(`
+    await orm.schema.execute(`
       create type with_enum_array_value as enum ('first', 'second', 'third');
       create table with_enum_array (id serial primary key, values with_enum_array_value[] not null);
     `);
