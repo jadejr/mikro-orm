@@ -76,6 +76,11 @@ export class PostgreSqlConnection extends AbstractSqlConnection {
     await this.database.exec(sql.toString());
   }
 
+  async loadQuery(query: string): Promise<void> {
+    await this.ensureConnection();
+    await this.database.exec(query);
+  }
+
   override getConnectionOptions(): PgLiteConnectionConfig {
     const ret: PgLiteConnectionConfig = super.getConnectionOptions();
 

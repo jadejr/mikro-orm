@@ -2,6 +2,7 @@ import { Client } from 'pg';
 import parseDate from 'postgres-date';
 import PostgresInterval, { type IPostgresInterval } from 'postgres-interval';
 import {
+  type MikroORM,
   type IsolationLevel,
   raw,
   ALIAS_REPLACEMENT,
@@ -15,6 +16,7 @@ import {
 } from '@mikro-orm/core';
 import { AbstractSqlPlatform, type IndexDef, PostgreSqlNativeQueryBuilder } from '@mikro-orm/knex';
 import { PostgreSqlSchemaHelper } from './PostgreSqlSchemaHelper.js';
+import { PGliteSchemaGenerator } from './PGliteSchemaGenerator.js';
 import { PostgreSqlExceptionConverter } from './PostgreSqlExceptionConverter.js';
 import { FullTextType } from './types/FullTextType.js';
 
@@ -22,6 +24,10 @@ export class PostgreSqlPlatform extends AbstractSqlPlatform {
 
   protected override readonly schemaHelper: PostgreSqlSchemaHelper = new PostgreSqlSchemaHelper(this);
   protected override readonly exceptionConverter = new PostgreSqlExceptionConverter();
+
+  override lookupExtensions(orm: MikroORM): void {
+    PGliteSchemaGenerator.register(orm);
+  }
 
   override setConfig(config: Configuration) {
     if (config.get('forceUtcTimezone') == null) {

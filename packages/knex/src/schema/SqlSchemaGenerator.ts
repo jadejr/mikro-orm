@@ -433,7 +433,7 @@ export class SqlSchemaGenerator extends AbstractSchemaGenerator<AbstractSqlDrive
     return this.execute(sql);
   }
 
-  private wrapSchema(sql: string | string[], options: { wrap?: boolean }): string {
+  protected wrapSchema(sql: string | string[], options: { wrap?: boolean }): string {
     const array = Utils.asArray(sql);
 
     if (array.length === 0) {
