@@ -50,7 +50,10 @@
     "access": "public"
   },
   "dependencies": {
+    "@electric-sql/pglite": "^0.2.16",
     "@mikro-orm/knex": "6.4.7",
+    "kysely-pglite": "patch:kysely-pglite@npm%3A0.6.1#~/.yarn/patches/kysely-pglite-npm-0.6.1-7a55ede32a.patch",
+    "kysely-pglite-dialect": "^1.0.3",
     "pg": "8.13.3",
     "postgres-array": "3.0.2",
     "postgres-date": "2.1.0",

@@ -1,0 +1,33 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index ea0993788981b34ca20f4ff0c82462cda2e670cc..4bd6a2f82c2f352e11ee129f940b067bfc332ce8 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -1,4 +1,5 @@
+ export { KyselyPGlite } from './kysely-pglite.js';
++export { PGliteDriver, PGliteConnection } from './pglite-driver.js'
+ export { KyselyLive } from './kysely-live.js';
+ export { Codegen } from './codegen.js';
+ export { createMigrator } from './utils/create-migrator.js';
+diff --git a/dist/index.js b/dist/index.js
+index e70ced615bbe6fc3a1c72a3153bcd0bc986d099c..b7ccc0d84735d7d785615359486593b56345b42b 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -1,4 +1,5 @@
+ export { KyselyPGlite } from './kysely-pglite.js';
++export { PGliteDriver, PGliteConnection } from './pglite-driver.js'
+ export { KyselyLive } from './kysely-live.js';
+ export { Codegen } from './codegen.js';
+ export { createMigrator } from './utils/create-migrator.js';
+diff --git a/dist/pglite-driver.js b/dist/pglite-driver.js
+index 7eb6cd72ca836ccc0823826a6532e607ce9d9da0..72410533e15d478a9d2642d66beae4ff337b9d3d 100644
+--- a/dist/pglite-driver.js
++++ b/dist/pglite-driver.js
+@@ -22,7 +22,7 @@ export class PGliteDriver {
+     async init() { }
+     async releaseConnection(_connection) { }
+ }
+-class PGliteConnection {
++export class PGliteConnection {
+     #client;
+     constructor(client) {
+         this.#client = client;

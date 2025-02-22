@@ -232,7 +232,7 @@ export class PostgreSqlPlatform extends AbstractSqlPlatform {
   }
 
   override supportsMultipleStatements(): boolean {
-    return true;
+    return false;
   }
 
   override getBeginTransactionSQL(options?: { isolationLevel?: IsolationLevel; readOnly?: boolean }): string[] {
@@ -507,7 +507,7 @@ export class PostgreSqlPlatform extends AbstractSqlPlatform {
   }
 
   override getDefaultClientUrl(): string {
-    return 'postgresql://postgres@127.0.0.1:5432';
+    return 'memory://';
   }
 
 }

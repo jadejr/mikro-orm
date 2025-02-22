@@ -320,7 +320,7 @@ export class PostgreSqlSchemaHelper extends SchemaHelper {
       o[name] = {
         name: row.enum_name,
         schema: row.schema_name,
-        items: this.platform.unmarshallArray(row.enum_value),
+        items: Array.isArray(row.enum_value) ? row.enum_value : this.platform.unmarshallArray(row.enum_value),
       };
 
       return o;
