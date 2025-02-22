@@ -1,3 +1,4 @@
+import { tmpdir } from 'node:os';
 import { MikroORM } from '@mikro-orm/postgresql';
 import { EntityGenerator } from '@mikro-orm/entity-generator';
 import { existsSync } from 'node:fs';
@@ -63,9 +64,12 @@ CREATE TABLE IF NOT EXISTS "odd table_names_example:100%"."123_table_name" (
     REFERENCES "odd_identifier's_example's_second"."table's name has apostrophe, Also \`\` this" ("__proto__")
 );`;
 
+const dataDir = `${tmpdir()}/mikro-orm-odd_table_names`;
+
 beforeAll(async () => {
   orm = await MikroORM.init({
     dbName,
+    host: dataDir,
     discovery: { warnWhenNoEntities: false },
     extensions: [EntityGenerator],
     multipleStatements: true,
@@ -82,6 +86,7 @@ beforeAll(async () => {
 beforeEach(async () => {
   orm = await MikroORM.init({
     dbName,
+    host: dataDir,
     discovery: { warnWhenNoEntities: false },
     extensions: [EntityGenerator],
     multipleStatements: true,

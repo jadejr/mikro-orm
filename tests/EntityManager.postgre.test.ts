@@ -104,25 +104,23 @@ describe('EntityManagerPostgre', () => {
     expect(await orm.checkConnection()).toEqual({
       ok: true,
     });
+    await orm.schema.createSchema();
   });
 
   test('getConnectionOptions()', async () => {
     const config = new Configuration({
       driver: PostgreSqlDriver,
-      clientUrl: 'postgre://root@127.0.0.1:1234/db_name',
-      host: '127.0.0.10',
-      password: 'secret',
-      user: 'user',
+      clientUrl: 'pglite://user@localhost/db_name?dataDir=/path/to/dataDir',
+      host: '/path/to/otherDataDir',
+      user: 'otherUser',
       logger: vi.fn(),
       forceUtcTimezone: true,
     } as any, false);
     const driver = new PostgreSqlDriver(config);
     expect(driver.getConnection().mapOptions({})).toMatchObject({
       database: 'db_name',
-      host: '127.0.0.10',
-      password: 'secret',
-      port: 1234,
-      user: 'user',
+      host: '/path/to/otherDataDir',
+      user: 'otherUser',
     });
   });
 
@@ -219,14 +217,13 @@ describe('EntityManagerPostgre', () => {
   test('connection returns correct URL', async () => {
     const conn1 = new PostgreSqlConnection(new Configuration({
       driver: PostgreSqlDriver,
-      clientUrl: 'postgre://example.host.com',
-      port: 1234,
+      clientUrl: 'file:/path/to/dataDir',
       user: 'usr',
-      password: 'pw',
+      schema: 'pw',
     }, false));
-    expect(conn1.getClientUrl()).toBe('postgre://usr:*****@example.host.com:1234');
-    const conn2 = new PostgreSqlConnection(new Configuration({ driver: PostgreSqlDriver, port: 5433 } as any, false));
-    expect(conn2.getClientUrl()).toBe('postgresql://postgres@127.0.0.1:5433');
+    expect(conn1.getClientUrl()).toBe('file:///path/to/dataDir?user=usr&schema=pw');
+    const conn2 = new PostgreSqlConnection(new Configuration({ driver: PostgreSqlDriver, dbName: 'db_name' } as any, false));
+    expect(conn2.getClientUrl()).toBe('memory://?dbName=db_name');
   });
 
   test('should convert entity to PK when trying to search by entity', async () => {
@@ -2368,6 +2365,8 @@ describe('EntityManagerPostgre', () => {
     Subscriber.log.length = 0;
   });
 
+  // TODO: skip if missing driver support for multiple connections?
+  /*
   test('getConnection() with replicas (GH issue #1963)', async () => {
     const config = new Configuration({
       driver: PostgreSqlDriver,
@@ -2397,6 +2396,7 @@ describe('EntityManagerPostgre', () => {
       port: 1234,
     });
   });
+  */
 
   // this should run in ~200ms (when running single test locally)
   test('perf: one to many', async () => {

@@ -1,3 +1,4 @@
+import { tmpdir } from 'node:os';
 import { MikroORM, Utils } from '@mikro-orm/postgresql';
 import { EntityGenerator } from '@mikro-orm/entity-generator';
 
@@ -28,9 +29,12 @@ CREATE TABLE IF NOT EXISTS "users"
 );
 `;
 
+const dataDir = `${tmpdir()}/mikro-orm-generated_columns`;
+
 beforeAll(async () => {
   orm = await MikroORM.init({
     dbName: schemaName,
+    host: dataDir,
     discovery: { warnWhenNoEntities: false },
     extensions: [EntityGenerator],
     multipleStatements: true,
@@ -47,6 +51,7 @@ beforeAll(async () => {
 beforeEach(async () => {
   orm = await MikroORM.init({
     dbName: schemaName,
+    host: dataDir,
     discovery: { warnWhenNoEntities: false },
     extensions: [EntityGenerator],
     multipleStatements: true,

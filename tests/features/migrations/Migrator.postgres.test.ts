@@ -4,6 +4,7 @@ import { MetadataStorage, MikroORM, raw } from '@mikro-orm/core';
 import { Migration, MigrationStorage, Migrator, TSMigrationGenerator } from '@mikro-orm/migrations';
 import type { DatabaseTable } from '@mikro-orm/postgresql';
 import { DatabaseSchema, PostgreSqlDriver } from '@mikro-orm/postgresql';
+import { tmpdir } from 'node:os';
 import { rm } from 'node:fs/promises';
 import {
   Address2,
@@ -53,6 +54,7 @@ describe('Migrator (postgres)', () => {
     orm = await MikroORM.init<PostgreSqlDriver>({
       entities: [Author2, Address2, Book2, BookTag2, Publisher2, Test2, FooBar2, FooBaz2, FooParam2, Configuration2],
       dbName: `mikro_orm_test_migrations`,
+      dataDir: tmpdir() + '/migrator-test-datadir',
       driver: PostgreSqlDriver,
       schema: 'custom',
       logger: () => void 0,
